@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Prod99 Planner — Update 1.1 Change Log</title>
-<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="%237A0C1E"/><path d="M8 8h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H8z" fill="%23F7F1EF"/><path d="M24 8h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z" fill="%23F7F1EF" opacity=".85"/></svg>'>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="/favicon.png" sizes="192x192">
+<link rel="apple-touch-icon" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -34,10 +36,10 @@ html.theme-anim,html.theme-anim *{transition:background-color .5s,color .5s,bord
 .orbs{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
 .orbs i{position:absolute;border-radius:50%;filter:blur(80px);opacity:.45;animation:drift 18s ease-in-out infinite alternate}
 .orbs i:nth-child(1){width:420px;height:420px;background:var(--wine);top:-140px;left:-120px}
-.orbs i:nth-child(2){width:340px;height:340px;background:#d49a6a;right:-90px;top:32%;opacity:.3;animation-delay:-6s}
+.orbs i:nth-child(2){width:340px;height:340px;background:#b5283f;right:-90px;top:32%;opacity:.3;animation-delay:-6s}
 .orbs i:nth-child(3){width:320px;height:320px;background:var(--wine-dark);bottom:-120px;left:35%;animation-delay:-11s}
 @keyframes drift{to{transform:translate(70px,44px) scale(1.18)}}
-body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;display:none;background:radial-gradient(60% 50% at 12% 0,rgba(122,12,30,.18),transparent 70%),radial-gradient(50% 45% at 92% 45%,rgba(212,154,106,.18),transparent 70%)}
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;display:none;background:radial-gradient(60% 50% at 12% 0,rgba(122,12,30,.18),transparent 70%),radial-gradient(50% 45% at 92% 45%,rgba(181,40,63,.18),transparent 70%)}
 
 /* nav */
 nav{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
@@ -155,7 +157,7 @@ html[data-theme="dark"][data-power="low"] .ico::before{transform:scale(1.5)}
 
 <nav>
   <div class="wrap">
-    <div class="brand"><span class="ic" data-k="cube" aria-hidden="true"></span>Prod99 Planner</div>
+    <div class="brand"><img id="logoNav" src="/logo-light.png" alt="Prod99 logo" style="height:34px;width:34px;margin-right:4px;">Prod99 Planner</div>
     <div class="nav-right">
       <button class="tbtn power-toggle" id="powerToggle" type="button" aria-pressed="false" title="Switch between high-end and low-end device mode"><span class="bat" aria-hidden="true"><i></i></span><span id="pLabel">High-end</span></button>
       <button class="tbtn" id="themeToggle" type="button" aria-label="Switch between light and dark mode"><span class="ico" aria-hidden="true"></span></button>
@@ -197,6 +199,10 @@ html[data-theme="dark"][data-power="low"] .ico::before{transform:scale(1.5)}
 <script>
 (function(){
 var r=document.documentElement;
+var LOGO_LIGHT = "/logo-light.png";
+var LOGO_DARK = "/logo-dark.png";
+var navLogo = document.getElementById('logoNav');
+function applyLogos(theme){ navLogo.src = theme === 'dark' ? LOGO_DARK : LOGO_LIGHT; }
 function u(n){return new Array(n+1).join('<u></u>')}
 function mk(k){return '<i class="'+k+'">'+(k==='cube'?u(6):k==='pyr'?'<u class="bs"></u>'+u(4):u(4))+'</i>'}
 var g=document.querySelector('.geo');
@@ -210,6 +216,7 @@ var tb=document.getElementById('themeToggle'),pb=document.getElementById('powerT
 tb.addEventListener('click',function(){
   var n=r.getAttribute('data-theme')==='dark'?'light':'dark';
   r.classList.add('theme-anim');r.setAttribute('data-theme',n);
+  applyLogos(n);
   try{localStorage.setItem('prod99_theme',n)}catch(e){}
   clearTimeout(tm);tm=setTimeout(function(){r.classList.remove('theme-anim')},700);
 });
@@ -220,6 +227,7 @@ function power(on){
   pb.title=on?'Low-end mode is on: static 3D, no motion or blur':'High-end mode is on: full 3D motion';
 }
 power(r.getAttribute('data-power')==='low');
+applyLogos(r.getAttribute('data-theme'));
 pb.addEventListener('click',function(){
   var on=r.getAttribute('data-power')!=='low';power(on);
   try{localStorage.setItem('prod99_power',on?'low':'off')}catch(e){}
